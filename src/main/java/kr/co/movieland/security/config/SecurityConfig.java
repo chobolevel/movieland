@@ -1,5 +1,8 @@
 package kr.co.movieland.security.config;
 
+import kr.co.movieland.security.handler.CustomAuthFailureHandler;
+import kr.co.movieland.security.handler.CustomAuthSuccessHandler;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,7 +12,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+  private final CustomAuthSuccessHandler successHandler;
+  private final CustomAuthFailureHandler failureHandler;
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
@@ -18,7 +26,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
         .anyRequest().permitAll()
         .and()
-        .formLogin();
+        .formLogin()
+        .loginPage(("/sign/in"))
+        .loginProcessingUrl("/sign/in")
+        .successHandler(successHandler)
+        .failureHandler(failureHandler);
   }
 
   @Bean
