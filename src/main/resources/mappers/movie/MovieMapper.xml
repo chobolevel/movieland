@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.movieland.mapper.movie.MovieMapper">
+
+    <resultMap id="BaseResultMap" type="Movie">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="desc" property="desc"/>
+        <result column="duration" property="duration"/>
+        <result column="release" property="release"/>
+        <result column="age_limit" property="ageLimit"/>
+        <result column="director_name" property="directorName"/>
+        <result column="lead_actors" property="leadActors"/>
+        <result column="genre" property="genre"/>
+        <result column="create_date" property="createDate"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+
+    <sql id="columns">
+        ${alias}id AS ${prefix}id,
+        ${alias}title AS ${prefix}title,
+        ${alias}`desc` AS `${prefix}desc`,
+        ${alias}duration AS ${prefix}duration,
+        ${alias}`release` AS `${prefix}release`,
+        ${alias}age_limit AS ${prefix}age_limit,
+        ${alias}director_name AS ${prefix}director_name,
+        ${alias}lead_actors AS ${prefix}lead_actors,
+        ${alias}genre AS ${prefix}genre,
+        ${alias}create_date AS ${prefix}create_date,
+        ${alias}update_date AS ${prefix}update_date,
+    </sql>
+
+    <select id="findAll" resultMap="BaseResultMap" parameterType="Movie">
+        SELECT
+        <include refid="columns">
+            <property name="alias" value=""/>
+            <property name="prefix" value=""/>
+        </include>
+        FROM movie
+    </select>
+
+    <select id="findOne" resultMap="BaseResultMap" parameterType="Movie">
+        SELECT
+        <include refid="columns">
+            <property name="alias" value=""/>
+            <property name="prefix" value=""/>
+        </include>
+        FROM movie
+        <where>
+            id = #{id}
+        </where>
+    </select>
+
+    <insert id="create" parameterType="Movie">
+        INSERT INTO
+        movie (id, title, desc, duration, release, age_limit, director_name, lead_actors, genre)
+        VALUES (#{id}, #{title}, #{desc}, #{duration}, #{release}, #{ageLimit}, #{directorName}, #{leadActors}, #{genre})
+    </insert>
+
+    <update id="modify" parameterType="Movie">
+        UPDATE movie
+        SET update_date = CURRENT_TIMESTAMP
+        <if test="title != null and title != ''">
+            , title = #{title}
+        </if>
+        <if test="desc != null and desc != ''">
+            , desc = #{desc}
+        </if>
+        <if test="duration != null">
+            , duration = #{duration}
+        </if>
+        <if test="release != null">
+            , release = #{release}
+        </if>
+        <if test="ageLimit != null">
+            , age_limit = #{ageLimit}
+        </if>
+        <if test="directorName != null and directorName != ''">
+            , director_name = #{directorName}
+        </if>
+        <if test="leadActors != null and leadActors != ''">
+            , lead_actors = #{leadActors}
+        </if>
+        <if test="genre != null and genre != ''">
+            , genre = #{genre}
+        </if>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Movie">
+        DELETE FROM movie WHERE id = #{id}
+    </delete>
+
+</mapper>
