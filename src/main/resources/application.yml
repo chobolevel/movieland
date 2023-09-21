@@ -10,11 +10,11 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
-    servlet:
-      multipart:
-        location: C:\dev\project\movieland\src\main\resources\static\img
-        max-file-size: 200MB
-        max-request-size: 100MB
+  servlet:
+    multipart:
+      location: C:\dev\project\movieland\src\main\resources\static\img
+      max-file-size: 200MB
+      max-request-size: 100MB
 
 #mybatis config
 mybatis:

@@ -65,6 +65,7 @@ public class MovieServiceImpl implements MovieService {
       }
       attachmentMapper.creates(attachmentList);
     }
+    movie.setId(movieId);
     movieMapper.create(movie);
   }
 

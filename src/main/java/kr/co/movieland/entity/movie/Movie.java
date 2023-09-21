@@ -4,6 +4,7 @@ import kr.co.movieland.entity.common.BaseEntity;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,5 +22,7 @@ public class Movie extends BaseEntity {
   private String directorName;
   private String leadActors;
   private String genre;
+
+  List<MovieReview> reviewList;
 
 }
