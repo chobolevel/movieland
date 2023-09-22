@@ -26,12 +26,6 @@ public class AccountRestController {
     return new ResponseEntity<>(accountService.findOne(Account.builder().id(id).build()), HttpStatus.OK);
   }
 
-  @PostMapping("")
-  public ResponseEntity<?> createAccount(@RequestBody Account account) throws ApiException {
-    accountService.create(account);
-    return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.CREATED), HttpStatus.CREATED);
-  }
-
   @PutMapping("{id}")
   public ResponseEntity<?> modifyAccount(@PathVariable String id, @RequestBody Account account) throws ApiException {
     account.setId(id);
