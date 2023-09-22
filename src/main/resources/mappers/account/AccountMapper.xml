@@ -41,14 +41,19 @@
         </include>
         FROM account
         <where>
-            id = #{id}
+            <if test="id != null and id != ''">
+                AND id = #{id}
+            </if>
+            <if test="username != null and username != ''">
+                AND username = #{username}
+            </if>
         </where>
     </select>
 
     <insert id="create" parameterType="Account">
         INSERT INTO
-        account (id, username, password, name, email)
-        VALUES (#{id}, #{username}, #{password}, #{name}, #{email})
+        account (id, username, password, name, email, role)
+        VALUES (#{id}, #{username}, #{password}, #{name}, #{email}, #{role})
     </insert>
 
     <update id="modify" parameterType="Account">
@@ -65,6 +70,9 @@
         </if>
         <if test="email != null and email != ''">
             , email = #{email}
+        </if>
+        <if test="role != null">
+            , role = #{role}
         </if>
         <if test="resignYn != null and resignYn != ''">
             , resign_yn = #{resignYn}

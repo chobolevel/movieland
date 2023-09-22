@@ -1,6 +1,7 @@
 package kr.co.movieland.service.account.impl;
 
 import kr.co.movieland.entity.account.Account;
+import kr.co.movieland.enums.Account.AccountRoleType;
 import kr.co.movieland.enums.common.ApiExceptionType;
 import kr.co.movieland.exception.ApiException;
 import kr.co.movieland.mapper.account.AccountMapper;
@@ -44,6 +45,7 @@ public class AccountServiceImpl implements AccountService {
     }
     account.setId(UUID.randomUUID().toString());
     account.setPassword(passwordEncoder.encode(account.getPassword()));
+    account.setRole(AccountRoleType.ROLE_USER);
     accountMapper.create(account);
   }
 
