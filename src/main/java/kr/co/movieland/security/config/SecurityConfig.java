@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+  private final UserDetailsService userDetailsService;
   private final CustomAuthSuccessHandler successHandler;
   private final CustomAuthFailureHandler failureHandler;
 
@@ -27,10 +29,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .anyRequest().permitAll()
         .and()
         .formLogin()
-        .loginPage(("/sign/in"))
+        .loginPage("/sign/in")
         .loginProcessingUrl("/sign/in")
         .successHandler(successHandler)
-        .failureHandler(failureHandler);
+        .failureHandler(failureHandler)
+        .and()
+        .logout()
+        .logoutUrl("/logout")
+        .logoutSuccessUrl("/")
+        .invalidateHttpSession(true)
+        .deleteCookies("JSESSIONID")
+        .and()
+        .sessionManagement()
+        .maximumSessions(1)
+        .maxSessionsPreventsLogin(true);
+    http
+        .rememberMe()
+        .rememberMeParameter("remember")
+        .tokenValiditySeconds(60*60)
+        .alwaysRemember(false)
+        .userDetailsService(userDetailsService);
   }
 
   @Bean
