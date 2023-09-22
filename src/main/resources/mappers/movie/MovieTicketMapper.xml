@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.movieland.mapper.movie.MovieTicketMapper">
+
+    <resultMap id="BaseResultMap" type="MovieTicket">
+        <id column="id" property="id"/>
+        <result column="movie_id" property="movieId"/>
+        <result column="theater_id" property="theaterId"/>
+        <result column="seat_number" property="seatNumber"/>
+        <result column="screen_datetime" property="screenDatetime"/>
+        <result column="create_date" property="createDate"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+
+    <sql id="columns">
+        ${alias}id AS ${prefix}id
+        , ${alias}movie_id AS ${prefix}movie_id
+        , ${alias}theater_id AS ${prefix}theater_id
+        , ${alias}seat_number AS ${prefix}seat_number
+        , ${alias}screen_datetime AS ${prefix}screen_datetime
+        , ${alias}create_date AS ${prefix}create_date
+        , ${alias}update_date AS ${prefix}update_date
+    </sql>
+
+    <select id="findAll" resultMap="BaseResultMap" parameterType="MovieTicket">
+        SELECT
+        <include refid="columns">
+            <property name="alias" value=""/>
+            <property name="prefix" value=""/>
+        </include>
+        FROM movie_ticket
+        WHERE theater_id = #{theaterId}
+    </select>
+
+    <select id="findOne" resultMap="BaseResultMap" parameterType="MovieTicket">
+        SELECT
+        <include refid="columns">
+            <property name="alias" value=""/>
+            <property name="prefix" value=""/>
+        </include>
+        FROM movie_ticket
+        WHERE theater_id = #{theaterId}
+    </select>
+
+    <insert id="create" parameterType="MovieTicket">
+        INSERT INTO
+        movie_ticket (id, movie_id, theater_id, seat_number, screen_datetime)
+        VALUES (#{id}, #{movieId}, #{theaterId}, #{seatNumber}, #{screenDatetime})
+    </insert>
+
+    <update id="modify" parameterType="MovieTicket">
+        UPDATE movie_ticket
+        SET update_date = CURRENT_TIMESTAMP
+        <if test="movieId != null and movieId != ''">
+            , movie_id = #{movieId}
+        </if>
+        <if test="theaterId != null and theaterId != ''">
+            , theater_id = #{theaterId}
+        </if>
+        <if test="seatNumber != null and seatNumber != ''">
+            , seat_number = #{seatNumber}
+        </if>
+        <if test="screenDatetime != null">
+            , screen_datetime = #{screenDatetime}
+        </if>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="MovieTicket">
+        DELETE FROM movie_ticket WHERE id = #{id}
+    </delete>
+
+</mapper>
