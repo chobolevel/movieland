@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>영화 나라 - 아이디 찾기</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+  <div>
+    <p>아이디 찾기</p>
+    <form>
+      <div>
+        <input name="name" placeholder="이름" type="text">
+      </div>
+      <div>
+        <input name="email" placeholder="이메일" type="text">
+      </div>
+      <div>
+        <button>아이디 찾기</button>
+      </div>
+      <div>
+        <a href="/sign/in">로그인</a>
+        <a href="/sign/up">회원가입</a>
+        <a href="/account/find-password">비밀번호 찾기</a>
+      </div>
+    </form>
+  </div>
+</section>
+
+</body>
+</html>
