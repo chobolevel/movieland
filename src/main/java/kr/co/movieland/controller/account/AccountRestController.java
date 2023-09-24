@@ -2,6 +2,7 @@ package kr.co.movieland.controller.account;
 
 import kr.co.movieland.entity.account.Account;
 import kr.co.movieland.entity.common.BaseResponse;
+import kr.co.movieland.enums.common.ApiExceptionType;
 import kr.co.movieland.exception.ApiException;
 import kr.co.movieland.service.account.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,15 @@ public class AccountRestController {
   @GetMapping("{id}")
   public ResponseEntity<?> getAccount(@PathVariable String id) {
     return new ResponseEntity<>(accountService.findOne(Account.builder().id(id).build()), HttpStatus.OK);
+  }
+
+  @GetMapping("find-username")
+  public ResponseEntity<?> findUsername(@RequestParam String name, @RequestParam String email) throws ApiException {
+    Account findAccount = accountService.findOne(Account.builder().name(name).email(email).build());
+    if(findAccount == null) {
+      throw new ApiException(ApiExceptionType.ACCOUNT_NOT_EXIST);
+    }
+    return new ResponseEntity<>(findAccount.getUsername(), HttpStatus.OK);
   }
 
   @PutMapping("{id}")
