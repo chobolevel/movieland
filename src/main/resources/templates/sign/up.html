@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>영화 나라 - 회원가입</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+  <div>
+    <p>회원가입</p>
+    <form>
+      <div>
+        <input name="username" placeholder="아이디" type="text">
+      </div>
+      <div>
+        <input name="password" placeholder="비밀번호" type="password">
+      </div>
+      <div>
+        <input name="passCheck" placeholder="비밀번호 확인" type="password">
+      </div>
+      <div>
+        <input name="name" placeholder="이름" type="text">
+      </div>
+      <div>
+        <input name="email" placeholder="이메일" type="text">
+      </div>
+      <div>
+        <button>회원가입</button>
+      </div>
+      <div>
+        <a href="">로그인</a>
+        <a href="">아이디 찾기</a>
+        <a href="">비밀번호 찾기</a>
+      </div>
+    </form>
+  </div>
+</section>
+
+</body>
+</html>

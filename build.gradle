@@ -33,6 +33,7 @@ dependencies {
 
     // view-template
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 
     // lombok
     compileOnly 'org.projectlombok:lombok'
