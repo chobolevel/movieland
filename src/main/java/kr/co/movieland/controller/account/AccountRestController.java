@@ -38,6 +38,12 @@ public class AccountRestController {
     return new ResponseEntity<>(findAccount.getUsername(), HttpStatus.OK);
   }
 
+  @GetMapping("check-username-duplicate")
+  public ResponseEntity<?> checkUsernameDuplicate(@RequestParam String username) throws ApiException {
+    accountService.checkUsernameDuplicate(Account.builder().username(username).build());
+    return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.OK), HttpStatus.OK);
+  }
+
   @PostMapping("send-auth-number")
   public ResponseEntity<?> sendAuthNumber(@RequestBody Account account) throws ApiException, MessagingException {
     accountService.sendAuthNumber(account);

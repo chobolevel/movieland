@@ -102,4 +102,12 @@ public class AccountServiceImpl implements AccountService {
     return accountMapper.findOne(Account.builder().username(account.getUsername()).email(account.getEmail()).build());
   }
 
+  @Override
+  public void checkUsernameDuplicate(Account account) throws ApiException {
+    Account findAccount = accountMapper.findOne(account);
+    if(findAccount != null) {
+      throw new ApiException(ApiExceptionType.USERNAME_ALREADY_EXIST);
+    }
+  }
+
 }

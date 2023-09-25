@@ -22,4 +22,6 @@ public interface AccountService {
 
   Account checkAuthNumber(Account account) throws ApiException;
 
+  void checkUsernameDuplicate(Account account) throws ApiException;
+
 }
