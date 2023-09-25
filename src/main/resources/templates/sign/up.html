@@ -10,7 +10,7 @@
 <section layout:fragment="content">
   <div>
     <p>회원가입</p>
-    <form>
+    <form class="sign-up-form">
       <div>
         <input name="username" placeholder="아이디" type="text">
       </div>
@@ -27,7 +27,7 @@
         <input name="email" placeholder="이메일" type="text">
       </div>
       <div>
-        <button>회원가입</button>
+        <button class="sign-up-btn">회원가입</button>
       </div>
       <div>
         <a href="/sign/in">로그인</a>
@@ -42,5 +42,93 @@
 </html>
 
 <script>
+  const $signUpForm = $('.sign-up-form')
+  const $usernameInput = $('input[name=username]')
+  const $passwordInput = $('input[name=password]')
+  const $passCheckInput = $('input[name=passCheck]')
+  const $nameInput = $('input[name=name]')
+  const $emailInput = $('input[name=email]')
+  const $submitBtn = $('.sign-up-btn')
+  let isUsernameDuplicate = false
 
+  $usernameInput.on('change', (e) => {
+    $.ajax({
+      url: `http://localhost:8080/api/account/check-username-duplicate?username=${$usernameInput.val()}`,
+      type: 'GET',
+      contentType: 'application/json',
+      success: () => {
+        $usernameInput.parent().children('.error').remove()
+        isUsernameDuplicate = false
+      },
+      error: (request) => {
+        $usernameInput.parent().append(`<label id="username-error" class="error" for="username">이미 사용중인 아이디입니다.</label>`)
+        isUsernameDuplicate = true
+      }
+    })
+  })
+  $signUpForm.validate({
+    rules: {
+      username: {
+        required: true
+      },
+      password: {
+        required: true
+      },
+      passCheck: {
+        required: true,
+        equalTo: '[name=password]'
+      },
+      name: {
+        required: true
+      },
+      email: {
+        required: true,
+        email: true
+      }
+    },
+    messages: {
+      username: {
+        required: '아이디는 필수 입력사항입니다.'
+      },
+      password: {
+        required: '비밀번호는 필수 입력사항입니다.'
+      },
+      passCheck: {
+        required: '비밀번호 재확인을 위한 필수 입력사항입니다.',
+        equalTo: '비밀번호가 일치하지 않습니다.'
+      },
+      name: {
+        required: '이름은 필수 입력사항입니다.'
+      },
+      email: {
+        required: '이메일을 필수 입력사항입니다',
+        email: '이메일 형식에 맞게 입력해주시기 바랍니다.'
+      }
+    },
+    submitHandler: () => {
+      $.ajax({
+        url: 'http://localhost:8080/api/sign/up',
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({
+          username: $usernameInput.val(),
+          password: $passwordInput.val(),
+          name: $nameInput.val(),
+          email: $emailInput.val()
+        }),
+        success: () => {
+          alert('회원 가입 성공 로그인 페이지로 이동합니다.')
+          location.href = '/sign/in'
+        },
+        error: (request) => {
+          alert('회원 가입 실패 양식에 맞게 작성되었는지 확인 부탁드립니다.')
+        }
+      })
+    }
+  })
+  $signUpForm.on('click', (e) => {
+    e.preventDefault()
+    $signUpForm.submit()
+  })
 </script>

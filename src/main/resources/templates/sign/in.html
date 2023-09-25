@@ -10,7 +10,7 @@
 <section layout:fragment="content">
   <div>
     <p>로그인</p>
-    <form>
+    <form action="/sign/in" class="sign-in-form" method="post">
       <div>
         <input name="username" placeholder="아이디" type="text">
       </div>
@@ -24,7 +24,7 @@
         </label>
       </div>
       <div>
-        <button>로그인</button>
+        <button class="sign-in-btn">로그인</button>
       </div>
       <div>
         <a href="/sign/up">회원가입</a>
@@ -37,3 +37,33 @@
 
 </body>
 </html>
+
+<script>
+  const $signInForm = $('.sign-in-form')
+  const $usernameInput = $('input[name=username]')
+  const $passwordInput = $('input[name=password]')
+  const $signInBtn = $('.sign-in-btn')
+  let isUsernameWritten = false
+  let isPasswordWritten = false
+
+  $signInBtn.on('click', (e) => {
+    e.preventDefault()
+    if($usernameInput.val().length === 0) {
+      isUsernameWritten = false
+      $usernameInput.parent().append('<p class="error">아이디가 입력되지 않았습니다.</p>')
+    } else {
+      isUsernameWritten = true
+      $usernameInput.parent().children('.error').remove()
+    }
+    if($passwordInput.val().length === 0) {
+      isPasswordWritten = false
+      $passwordInput.parent().append('<p class="error">비밀번호가 입력되지 않았습니다.</p>')
+    } else {
+      isPasswordWritten = true
+      $passwordInput.parent().children('.error').remove()
+    }
+    if(isUsernameWritten && isPasswordWritten) {
+      $signInForm.submit()
+    }
+  })
+</script>
