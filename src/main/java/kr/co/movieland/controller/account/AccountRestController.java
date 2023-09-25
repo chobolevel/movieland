@@ -36,6 +36,18 @@ public class AccountRestController {
     return new ResponseEntity<>(findAccount.getUsername(), HttpStatus.OK);
   }
 
+  @PostMapping("send-auth-number")
+  public ResponseEntity<?> sendAuthNumber(@RequestBody Account account) throws ApiException, MessagingException {
+    accountService.sendAuthNumber(account);
+    return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.OK), HttpStatus.OK);
+  }
+
+  @PostMapping("check-auth-number")
+  public ResponseEntity<?> checkAuthNumber(@RequestBody Account account) throws ApiException {
+    Account checkedAccount = accountService.checkAuthNumber(account);
+    return new ResponseEntity<>(checkedAccount, HttpStatus.OK);
+  }
+
   @PutMapping("{id}")
   public ResponseEntity<?> modifyAccount(@PathVariable String id, @RequestBody Account account) throws ApiException {
     account.setId(id);
