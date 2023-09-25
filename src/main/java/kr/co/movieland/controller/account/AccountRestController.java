@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/account")
@@ -51,6 +53,12 @@ public class AccountRestController {
   @PutMapping("{id}")
   public ResponseEntity<?> modifyAccount(@PathVariable String id, @RequestBody Account account) throws ApiException {
     account.setId(id);
+    accountService.modify(account);
+    return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.OK), HttpStatus.OK);
+  }
+
+  @PutMapping("change-password")
+  public ResponseEntity<?> changePassword(@RequestBody Account account) throws ApiException {
     accountService.modify(account);
     return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.OK), HttpStatus.OK);
   }
