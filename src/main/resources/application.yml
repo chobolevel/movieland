@@ -15,6 +15,32 @@ spring:
       location: C:\dev\project\movieland\src\main\resources\static\img
       max-file-size: 200MB
       max-request-size: 100MB
+  # redis config
+  redis:
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 10
+        min-idle: 2
+    host: localhost
+    port: 6379
+    password: ""
+  # mail config
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${mail.username}
+    password: ${mail.password}
+    properties:
+      mail:
+        smtp:
+          # 사용자 인증 시도 여부(default = false)
+          auth: true
+          # Socket read timeout 5000ms(default = 무한)
+          timeout: 5000
+          # startTLS 활성화 여부(default = false)
+          starttls:
+            enable: true
 
 #mybatis config
 mybatis:
