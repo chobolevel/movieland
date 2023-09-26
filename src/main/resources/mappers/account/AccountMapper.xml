@@ -48,7 +48,7 @@
                 AND username = #{username}
             </if>
             <if test="name != null and name != '' and email != null and email != ''">
-                AND `name` = #{name} AND username = #{username}
+                AND `name` = #{name} AND email = #{email}
             </if>
             <if test="username != null and username != '' and email != null and email != ''">
                 AND username = #{username} AND email = #{email}
