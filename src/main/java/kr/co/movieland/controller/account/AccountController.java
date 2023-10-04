@@ -26,4 +26,9 @@ public class AccountController {
     return "/account/change-password";
   }
 
+  @GetMapping("profile")
+  public String profile() {
+    return "/account/profile";
+  }
+
 }

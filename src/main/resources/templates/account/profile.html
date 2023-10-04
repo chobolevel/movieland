@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>영화 나라 - 홈</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+  <div>
+    <p>프로필</p>
+    <div>
+      <p class="name-info"></p>
+      <p class="email-info"></p>
+      <p class="point-info"></p>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
+
+<script>
+  const $nameInfo = $('.name-info')
+  const $emailInfo = $('.email-info')
+  const $pointInfo = $('.point-info')
+
+  $.ajax({
+    url: 'http://localhost:8080/api/account/me',
+    type: 'GET',
+    contentType: 'application/json',
+    success: (data) => {
+      $nameInfo.text(data.name)
+      $emailInfo.text(data.email)
+      $pointInfo.text(data.point)
+    },
+    error: (request) => {
+      console.log(request)
+      alert('로그인한 회원만 접근이 가능합니다.')
+      location.href = '/'
+    }
+  })
+</script>
