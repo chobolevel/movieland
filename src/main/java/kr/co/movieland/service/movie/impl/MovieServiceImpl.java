@@ -54,6 +54,8 @@ public class MovieServiceImpl implements MovieService {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "director_name", "String");
     }
     String movieId = UUID.randomUUID().toString();
+    movie.setId(movieId);
+    movieMapper.create(movie);
     if(uploadFiles != null) {
       List<Attachment> attachmentList = uploadFiles
           .stream().map((file) -> new Attachment(null, movieId, file.getOriginalFilename()))
@@ -65,8 +67,6 @@ public class MovieServiceImpl implements MovieService {
       }
       attachmentMapper.creates(attachmentList);
     }
-    movie.setId(movieId);
-    movieMapper.create(movie);
   }
 
   @Override
