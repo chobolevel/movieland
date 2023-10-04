@@ -1,11 +1,14 @@
 <html lang="ko" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <nav th:fragment="navFragment">
   <ul>
-    <li>
-      <a href="/sign/in" sec:authorize="isAnonymous()">로그인</a>
+    <li sec:authorize="isAnonymous()">
+      <a href="/sign/in">로그인</a>
     </li>
-    <li>
-      <a href="/sign/up" sec:authorize="isAnonymous()">회원가입</a>
+    <li sec:authorize="isAnonymous()">
+      <a href="/sign/up">회원가입</a>
+    </li>
+    <li sec:authorize="hasRole('ADMIN')">
+      <a href="/movie/upload">영화 등록</a>
     </li>
   </ul>
 </nav>

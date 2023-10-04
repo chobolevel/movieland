@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>영화 나라 - 영화 목록</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+</section>
+
+</body>
+</html>
+
+<script>
+  $.ajax({
+    url: 'http://localhost:8080/api/movie/list',
+    type: 'GET',
+    contentType: 'application/json',
+    success: (data) => {
+      console.log(data)
+    },
+    error: (request) => {
+
+    }
+  })
+</script>

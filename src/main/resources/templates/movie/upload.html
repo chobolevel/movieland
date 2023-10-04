@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>영화 나라 - 영화 등록</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+  <div>
+    <p>영화 등록</p>
+    <form class="movie-upload-form">
+      <div>
+        <input name="title" placeholder="영화 제목" type="text">
+      </div>
+      <div>
+        <textarea name="desc" placeholder="영화 개요"></textarea>
+      </div>
+      <div>
+        <input name="duration" placeholder="러닝 타임" type="text">
+      </div>
+      <div>
+        <input name="release" placeholder="상영 시작 일자" type="date">
+      </div>
+      <div>
+        <input name="ageLimit" placeholder="연령 제한" type="text">
+      </div>
+      <div>
+        <input name="directorName" placeholder="감독 이름" type="text">
+      </div>
+      <div>
+        <input name="leadActors" placeholder="주연 배우" type="text">
+      </div>
+      <div>
+        <input name="genre" placeholder="장르" type="text">
+      </div>
+      <div>
+        <input accept="image/gif" name="uploadFiles" type="file">
+      </div>
+      <div>
+        <button>영화 등록</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+</body>
+</html>
+
+<script>
+  const $movieUploadForm = $('.movie-upload-form')
+  const $titleInput = $('input[name=title]')
+  const $descTextarea = $('textarea[name=desc]')
+  const $durationInput = $('input[name=duration]')
+  const $releaseInput = $('input[name=release]')
+  const $ageLimitInput = $('input[name=ageLimit]')
+  const $directorNameInput = $('input[name=directorName]')
+  const $leadActorsInput = $('input[name=leadActors]')
+  const $genreInput = $('input[name=genre]')
+  const $uploadFilesInput = $('input[name=uploadFiles]')
+
+  $movieUploadForm.validate({
+    rules: {
+      title: {
+        required: true
+      },
+      desc: {
+        required: true
+      },
+      duration: {
+        required: true
+      },
+      release: {
+        required: true
+      },
+      ageLimit: {
+        required: true
+      },
+      directorName: {
+        required: true
+      }
+    },
+    messages: {
+      title: {
+        required: '제목이 입력되지 않았습니다.'
+      },
+      desc: {
+        required: '영화 개요가 입력되지 않았습니다.'
+      },
+      duration: {
+        required: '영화 러닝타임이 입력되지 않았습니다.'
+      },
+      release: {
+        required: '상영 시작 일자가 입력되지 않았습니다.'
+      },
+      ageLimit: {
+        required: '연령 제한이 입력되지 않았습니다.'
+      },
+      directorName: {
+        required: '감독 이름이 입력되지 않았습니다.'
+      }
+    },
+    submitHandler: () => {
+      const formData = new FormData()
+      const data = {
+        title: $titleInput.val(),
+        desc: $descTextarea.val(),
+        duration: $durationInput.val(),
+        release: $releaseInput.val(),
+        ageLimit: $ageLimitInput.val(),
+        directorName: $directorNameInput.val(),
+        leadActors: $leadActorsInput.val(),
+        genre: $genreInput.val()
+      }
+      formData.append('movie', new  Blob([JSON.stringify(data)], { type: 'application/json' }))
+      Array.from($uploadFilesInput[0].files).forEach((file) => {
+        formData.append('uploadFiles', file)
+      })
+      $.ajax({
+        url: 'http://localhost:8080/api/movie',
+        type: 'POST',
+        contentType: false,
+        processData: false,
+        cache: false,
+        encType: 'multipart/form-data',
+        dataType: 'json',
+        data: formData,
+        success: () => {
+          alert('영화 정보 저장 성공!')
+          location.href = '/movie/list'
+        },
+        error: () => {
+          alert('영화 정보 저장 실패!')
+        }
+      })
+    }
+  })
+</script>
