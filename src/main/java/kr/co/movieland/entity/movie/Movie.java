@@ -1,5 +1,6 @@
 package kr.co.movieland.entity.movie;
 
+import kr.co.movieland.entity.attachment.Attachment;
 import kr.co.movieland.entity.common.BaseEntity;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class Movie extends BaseEntity {
   private String leadActors;
   private String genre;
 
+  List<Attachment> attachmentList;
   List<MovieReview> reviewList;
 
 }

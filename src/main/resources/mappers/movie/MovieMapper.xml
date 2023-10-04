@@ -17,6 +17,11 @@
     </resultMap>
 
     <resultMap id="RelatedResultMap" type="Movie" extends="BaseResultMap">
+        <collection property="attachmentList"
+                    javaType="List"
+                    ofType="Attachment"
+                    columnPrefix="a_"
+                    resultMap="kr.co.movieland.mapper.attachment.AttachmentMapper.BaseResultMap"/>
         <collection property="reviewList"
                     javaType="List"
                     ofType="MovieReview"
@@ -38,20 +43,16 @@
         ${alias}update_date AS ${prefix}update_date
     </sql>
 
-    <select id="findAll" resultMap="BaseResultMap" parameterType="Movie">
-        SELECT
-        <include refid="columns">
-            <property name="alias" value=""/>
-            <property name="prefix" value=""/>
-        </include>
-        FROM movie
-    </select>
-
-    <select id="findOne" resultMap="BaseResultMap" parameterType="Movie">
+    <select id="findAll" resultMap="RelatedResultMap" parameterType="Movie">
         SELECT
         <include refid="columns">
             <property name="alias" value="m."/>
             <property name="prefix" value=""/>
+        </include>
+        ,
+        <include refid="kr.co.movieland.mapper.attachment.AttachmentMapper.columns">
+            <property name="alias" value="a."/>
+            <property name="prefix" value="a_"/>
         </include>
         ,
         <include refid="kr.co.movieland.mapper.movie.MovieReviewMapper.columns">
@@ -59,10 +60,35 @@
             <property name="prefix" value="mr_"/>
         </include>
         FROM movie AS m
+        LEFT JOIN attachment AS a
+        ON m.id = a.movie_id
         LEFT JOIN movie_review AS mr
-            ON m.id = mr.movie_id
+        ON m.id = mr.movie_id
+    </select>
+
+    <select id="findOne" resultMap="RelatedResultMap" parameterType="Movie">
+        SELECT
+        <include refid="columns">
+            <property name="alias" value="m."/>
+            <property name="prefix" value=""/>
+        </include>
+        ,
+        <include refid="kr.co.movieland.mapper.attachment.AttachmentMapper.columns">
+            <property name="alias" value="a."/>
+            <property name="prefix" value="a_"/>
+        </include>
+        ,
+        <include refid="kr.co.movieland.mapper.movie.MovieReviewMapper.columns">
+            <property name="alias" value="mr."/>
+            <property name="prefix" value="mr_"/>
+        </include>
+        FROM movie AS m
+        LEFT JOIN attachment AS a
+        ON m.id = a.movie_id
+        LEFT JOIN movie_review AS mr
+        ON m.id = mr.movie_id
         <where>
-            id = #{id}
+            m.id = #{id}
         </where>
     </select>
 
