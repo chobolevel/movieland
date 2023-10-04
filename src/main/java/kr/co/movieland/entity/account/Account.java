@@ -18,6 +18,7 @@ public class Account extends BaseEntity {
   private String password;
   private String name;
   private String email;
+  private int point;
   private AccountRoleType role;
   private String resignYn;
 

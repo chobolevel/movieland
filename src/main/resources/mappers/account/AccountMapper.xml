@@ -8,6 +8,8 @@
         <result column="password" property="password"/>
         <result column="name" property="name"/>
         <result column="email" property="email"/>
+        <result column="point" property="point"/>
+        <result column="role" property="role"/>
         <result column="resign_yn" property="resignYn"/>
         <result column="create_date" property="createDate"/>
         <result column="update_date" property="updateDate"/>
@@ -19,6 +21,8 @@
         ${alias}password AS ${prefix}password,
         ${alias}`name` AS `${prefix}name`,
         ${alias}email AS ${prefix}email,
+        ${alias}point AS ${prefix}point,
+        ${alias}`role` AS `${prefix}role`,
         ${alias}resign_yn AS ${prefix}resign_yn,
         ${alias}create_date AS ${prefix}create_date,
         ${alias}update_date AS ${prefix}update_date
