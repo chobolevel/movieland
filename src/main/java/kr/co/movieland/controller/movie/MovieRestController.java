@@ -31,7 +31,7 @@ public class MovieRestController {
   }
 
   @PostMapping("")
-  public ResponseEntity<?> createMovie(@RequestBody Movie movie, @RequestPart(required = false) List<MultipartFile> uploadFiles) throws IOException, ApiException {
+  public ResponseEntity<?> createMovie(@RequestPart(name = "movie") Movie movie, @RequestPart(required = false) List<MultipartFile> uploadFiles) throws IOException, ApiException {
     movieService.create(movie, uploadFiles);
     return new ResponseEntity<>(BaseResponse.getInstance(HttpStatus.CREATED), HttpStatus.CREATED);
   }
