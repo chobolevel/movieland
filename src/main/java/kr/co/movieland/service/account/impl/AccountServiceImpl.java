@@ -62,6 +62,9 @@ public class AccountServiceImpl implements AccountService {
     if(account.getId() == null || account.getId().isEmpty()) {
       throw new ApiException(ApiExceptionType.MISSING_PARAMETER, "id", "String");
     }
+    if(account.getPassword() != null) {
+      account.setPassword(passwordEncoder.encode(account.getPassword()));
+    }
     accountMapper.modify(account);
   }
 
