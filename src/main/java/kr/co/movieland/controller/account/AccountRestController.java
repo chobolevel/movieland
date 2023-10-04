@@ -4,10 +4,12 @@ import kr.co.movieland.entity.account.Account;
 import kr.co.movieland.entity.common.BaseResponse;
 import kr.co.movieland.enums.common.ApiExceptionType;
 import kr.co.movieland.exception.ApiException;
+import kr.co.movieland.security.details.CustomUserDetails;
 import kr.co.movieland.service.account.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -27,6 +29,11 @@ public class AccountRestController {
   @GetMapping("{id}")
   public ResponseEntity<?> getAccount(@PathVariable String id) {
     return new ResponseEntity<>(accountService.findOne(Account.builder().id(id).build()), HttpStatus.OK);
+  }
+
+  @GetMapping("me")
+  public ResponseEntity<?> getProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    return new ResponseEntity<>(accountService.findOne(Account.builder().id(userDetails.getAccount().getId()).build()), HttpStatus.OK);
   }
 
   @GetMapping("find-username")
