@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>영화 나라 - 영화 티켓 등록</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+  <div>
+    <p>영화 티켓 정보 등록</p>
+    <form class="ticket-register-form">
+      <div>
+        <select name="movieId">
+        </select>
+      </div>
+      <div>
+        <select name="theaterId">
+        </select>
+      </div>
+      <div>
+        <input name="rowStart" placeholder="행 시작 번호(예: 1)" type="text"><br>
+        <input name="rowEnd" placeholder="행 끝 번호(예: 10)" type="text">
+      </div>
+      <div>
+        <input name="columnStart" placeholder="열 시작 번호(에: a)" type="text"><br>
+        <input name="columnEnd" placeholder="열 끝 번호(예: j)" type="text">
+      </div>
+      <div>
+        <input name="screenDatetime" type="datetime-local">
+      </div>
+      <div>
+        <button>티켓 등록</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+</body>
+</html>
+
+<script>
+  const $ticketRegisterForm = $('.ticket-register-form')
+  const $movieIdSelect = $('select[name=movieId]')
+  const $theaterIdSelect = $('select[name=theaterId]')
+  const $rowStartInput = $('input[name=rowStart]')
+  const $rowEndInput = $('input[name=rowEnd]')
+  const $columnStartInput = $('input[name=columnStart]')
+  const $columnEndInput = $('input[name=columnEnd]')
+  const $screenDatetimeInput = $('input[name=screenDatetime]')
+
+  $.ajax({
+    url: 'http://localhost:8080/api/movie/list',
+    type: 'GET',
+    contentType: 'application/json',
+    success: (data) => {
+      data.forEach((movie) => {
+        $movieIdSelect.append(`
+        <option value="${movie.id}">${movie.title}</option>
+      `)
+      })
+    },
+    error: (request) => {
+      console.log(request)
+    }
+  })
+  $.ajax({
+    url: 'http://localhost:8080/api/movie-theater/list',
+    type: 'GET',
+    contentType: 'application/json',
+    success: (data) => {
+      data.forEach((theater) => {
+        $theaterIdSelect.append(`
+          <option value="${theater.id}">${theater.name}</option>
+        `)
+      })
+    },
+    error: (request) => {
+      console.log(request)
+    }
+  })
+
+  $ticketRegisterForm.validate({
+    rules: {
+      movieId: {
+        required: true
+      },
+      theaterId: {
+        required: true
+      },
+      rowStart: {
+        required: true
+      },
+      rowEnd: {
+        required: true
+      },
+      columnStart: {
+        required: true
+      },
+      columnEnd: {
+        required: true
+      },
+      screenDatetime: {
+        required: true
+      }
+    },
+    messages: {
+      movieId: {
+        required: '영화가 선택되지 않았습니다.'
+      },
+      theaterId: {
+        required: '극장이 선택되지 않았습니다.'
+      },
+      rowStart: {
+        required: '행 시작 번호가 입력되지 않았습니다.(예: 1)'
+      },
+      rowEnd: {
+        required: '행 끝 번호가 입력되지 않았습니다.(예: 1)'
+      },
+      columnStart: {
+        required: '열 시작 번호가 입력되지 않았습니다.(예: a)'
+      },
+      columnEnd: {
+        required: '열 끝 번호가 입력되지 않았습니다.(예: j)'
+      },
+      screenDatetime: {
+        required: '상영 시작 일자가 입력되지 않았습니다.'
+      }
+    },
+    submitHandler: () => {
+      $.ajax({
+        url: 'http://localhost:8080/api/movie-ticket',
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({
+          movieId: $movieIdSelect.val(),
+          theaterId: $theaterIdSelect.val(),
+          rowStart: $rowStartInput.val(),
+          rowEnd: $rowEndInput.val(),
+          columnStart: $columnStartInput.val(),
+          columnEnd: $columnEndInput.val(),
+          screenDatetime: new Date($screenDatetimeInput.val())
+        }),
+        success: () => {
+          alert('티켓 정보 등록 성공')
+        },
+        error: (request) => {
+          alert('티켓 정보 등록 실패')
+        }
+      })
+    }
+  })
+</script>

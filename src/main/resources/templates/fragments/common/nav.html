@@ -22,6 +22,9 @@
     <li sec:authorize="hasRole('ADMIN')">
       <a href="/movie-theater/list">영화관 목록</a>
     </li>
+    <li sec:authorize="hasRole('ADMIN')">
+      <a href="/movie-ticket/register">영화 티켓 등록</a>
+    </li>
   </ul>
 </nav>
 </html>

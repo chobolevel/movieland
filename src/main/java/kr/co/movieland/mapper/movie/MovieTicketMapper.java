@@ -12,7 +12,7 @@ public interface MovieTicketMapper {
 
   MovieTicket findOne(MovieTicket movieTicket);
 
-  void create(MovieTicket movieTicket);
+  void create(List<MovieTicket> movieTicketList);
 
   void modify(MovieTicket movieTicket);
 

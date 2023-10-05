@@ -42,10 +42,13 @@
         WHERE theater_id = #{theaterId}
     </select>
 
-    <insert id="create" parameterType="MovieTicket">
+    <insert id="create" parameterType="List">
         INSERT INTO
-        movie_ticket (id, movie_id, theater_id, seat_number, screen_datetime)
-        VALUES (#{id}, #{movieId}, #{theaterId}, #{seatNumber}, #{screenDatetime})
+        movie_ticket(id, movie_id, theater_id, seat_number, screen_datetime)
+        VALUES
+        <foreach collection="movieTicketList" item="movieTicket" separator=", ">
+            (#{movieTicket.id}, #{movieTicket.movieId}, #{movieTicket.theaterId}, #{movieTicket.seatNumber}, #{movieTicket.screenDatetime})
+        </foreach>
     </insert>
 
     <update id="modify" parameterType="MovieTicket">
