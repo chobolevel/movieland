@@ -1,15 +1,16 @@
 package kr.co.movieland.entity.common;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Date;
 
 @Getter
 @Setter
 public class BaseEntity {
 
-  private Date createDate;
-  private Date updateDate;
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  private String createDate;
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  private String updateDate;
 
 }
