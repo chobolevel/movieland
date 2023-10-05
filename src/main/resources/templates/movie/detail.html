@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>영화 나라 - 세부 정보</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+  <div>
+    <p>영화 세부 정보</p>
+    <div class="movie-detail">
+
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
+
+<script th:inline="javascript">
+  const movieId = [[${id}]]
+  const $movieDetail = $('.movie-detail')
+
+  $.ajax({
+    url: `http://localhost:8080/api/movie/${movieId}`,
+    type: 'GET',
+    contentType: 'application/json',
+    success: (movie) => {
+      $movieDetail.append(`
+        <img src="http://localhost:8080/img/${movie.id}/${movie.attachmentList[0].name}" alt="${movie.title}">
+        <p>${movie.title}</p>
+        <p>${movie.desc}</p>
+        <p>${movie.duration} 분</p>
+        <p>${movie.release}</p>
+        <p>${movie.ageLimit}세 이상 관람가</p>
+        <p>${movie.directorName}</p>
+        <p>${movie.leadActors}</p>
+        <p>${movie.genre}</p>
+      `)
+    },
+    error: (request) => {
+      console.log(request)
+    }
+  })
+</script>

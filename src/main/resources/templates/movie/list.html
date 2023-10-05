@@ -8,18 +8,34 @@
 <body>
 
 <section layout:fragment="container">
+  <div>
+    <p>현재 상영 영화 목록</p>
+    <div class="movie-list">
+
+    </div>
+  </div>
 </section>
 
 </body>
 </html>
 
 <script>
+  const $movieList = $('.movie-list')
+
   $.ajax({
     url: 'http://localhost:8080/api/movie/list',
     type: 'GET',
     contentType: 'application/json',
     success: (data) => {
-      console.log(data)
+      data.forEach((movie) => {
+        $movieList.append(
+          `<div>
+             <img src="http://localhost:8080/img/${movie.id}/${movie.attachmentList[0].name}" alt="${movie.title} 포스터" style="width: 200px; height: 300px;">
+             <a href="/movie/detail?id=${movie.id}">${movie.title}</a>
+             <p>${movie.release}</p>
+           </div>`
+        )
+      })
     },
     error: (request) => {
 
