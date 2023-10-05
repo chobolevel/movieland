@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>영화 나라 - 영화관 등록</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+  <div>
+    <p>영화관 등록</p>
+    <form class="theater-register-form">
+      <div>
+        <input name="name" placeholder="극장 이름" type="text">
+      </div>
+      <div>
+        <input name="city" placeholder="극장 구분(서울/경기/인천/강원/대전,충청/대구/부산,울산/경상/광주,전라,제주)" type="text">
+      </div>
+      <div>
+        <input name="address" placeholder="극장 세부 주소" type="text">
+      </div>
+      <div>
+        <button>등록하기</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+</body>
+</html>
+
+<script>
+  const $theaterRegisterForm = $('.theater-register-form')
+  const $nameInput = $('input[name=name]')
+  const $cityInput = $('input[name=city]')
+  const $addressInput = $('input[name=address]')
+
+  $theaterRegisterForm.validate({
+    rules: {
+      name: {
+        required: true
+      },
+      city: {
+        required: true
+      },
+      address: {
+        required: true
+      }
+    },
+    message: {
+      name: {
+        required: '극장명이 입력되지 않았습니다.'
+      },
+      city: {
+        required: '극장 구분이 입력되지 않았습니다.'
+      },
+      address: {
+        required: '극장 주소가 입력되지 않았습니다.'
+      }
+    },
+    submitHandler: () => {
+      $.ajax({
+        url: 'http://localhost:8080/api/movie-theater',
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify({
+          name: $nameInput.val(),
+          city: $cityInput.val(),
+          address: $addressInput.val()
+        }),
+        success: () => {
+          alert('극장 등록이 성공!\n극장 목록 페이지로 이동합니다.')
+          location.href = '/movie-theater/list'
+        },
+        error: (request) => {
+          console.log(request)
+        }
+      })
+    }
+  })
+</script>

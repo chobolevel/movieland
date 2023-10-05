@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layout/default_layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>영화 나라 - 영화관 목록</title>
+</head>
+<body>
+
+<section layout:fragment="container">
+  <div>
+    <p>영화관 목록</p>
+    <div class="movie-theater-list">
+
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
+
+<script>
+  const $movieTheaterList = $('.movie-theater-list')
+
+  $.ajax({
+    url: 'http://localhost:8080/api/movie-theater/list',
+    type: 'GET',
+    contentType: 'application/json',
+    success: (theaterList) => {
+      theaterList.forEach((theater) => {
+        $movieTheaterList.append(`
+        <div>
+          <p>${theater.name}</p>
+          <p>${theater.city}</p>
+          <p>${theater.address}</p>
+        </div>
+      `)
+      })
+    },
+    error: (request) => {
+      console.log(request)
+    }
+  })
+</script>
