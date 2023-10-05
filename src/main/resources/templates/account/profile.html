@@ -33,7 +33,7 @@
     success: (data) => {
       $nameInfo.text(data.name)
       $emailInfo.text(data.email)
-      $pointInfo.text(data.point)
+      $pointInfo.text(`${data.point} 포인트`)
     },
     error: (request) => {
       console.log(request)
