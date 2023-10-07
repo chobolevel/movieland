@@ -2,8 +2,11 @@ package kr.co.movieland.entity.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import kr.co.movieland.entity.common.BaseEntity;
+import kr.co.movieland.entity.movie.MovieTicket;
 import kr.co.movieland.enums.Account.AccountRoleType;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,5 +26,7 @@ public class Account extends BaseEntity {
   private String resignYn;
 
   private String authNumber;
+
+  private List<MovieTicket> movieTicketList;
 
 }
