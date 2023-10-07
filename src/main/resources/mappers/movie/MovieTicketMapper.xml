@@ -10,6 +10,9 @@
         <result column="screen_datetime" property="screenDatetime"/>
         <result column="create_date" property="createDate"/>
         <result column="update_date" property="updateDate"/>
+        <association property="movie"
+                     columnPrefix="m_"
+                     resultMap="kr.co.movieland.mapper.movie.MovieMapper.RelatedResultMap"/>
     </resultMap>
 
     <sql id="columns">
