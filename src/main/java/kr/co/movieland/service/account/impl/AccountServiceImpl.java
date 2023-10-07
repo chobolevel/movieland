@@ -2,6 +2,7 @@ package kr.co.movieland.service.account.impl;
 
 import kr.co.movieland.entity.account.Account;
 import kr.co.movieland.entity.common.Mail;
+import kr.co.movieland.entity.movie.MovieTicket;
 import kr.co.movieland.enums.Account.AccountRoleType;
 import kr.co.movieland.enums.common.ApiExceptionType;
 import kr.co.movieland.exception.ApiException;
@@ -20,6 +21,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import static java.util.stream.Collectors.groupingBy;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -37,7 +40,11 @@ public class AccountServiceImpl implements AccountService {
 
   @Override
   public Account findOne(Account account) {
-    return accountMapper.findOne(account);
+    Account findAccount = accountMapper.findOne(account);
+    findAccount.setMovieTicketMap(findAccount.getMovieTicketList()
+        .stream()
+        .collect(groupingBy(MovieTicket::getScreenDatetime)));
+    return findAccount;
   }
 
   @Override

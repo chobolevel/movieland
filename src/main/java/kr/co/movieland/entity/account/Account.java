@@ -6,7 +6,9 @@ import kr.co.movieland.entity.movie.MovieTicket;
 import kr.co.movieland.enums.Account.AccountRoleType;
 import lombok.*;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -28,5 +30,6 @@ public class Account extends BaseEntity {
   private String authNumber;
 
   private List<MovieTicket> movieTicketList;
+  private Map<Date, List<MovieTicket>> movieTicketMap;
 
 }

@@ -56,11 +56,25 @@
             <property name="alias" value="mt."/>
             <property name="prefix" value="mt_"/>
         </include>
+        ,
+        <include refid="kr.co.movieland.mapper.movie.MovieMapper.columns">
+            <property name="alias" value="m."/>
+            <property name="prefix" value="mt_m_"/>
+        </include>
+        ,
+        <include refid="kr.co.movieland.mapper.attachment.AttachmentMapper.columns">
+            <property name="alias" value="at."/>
+            <property name="prefix" value="mt_m_a_"/>
+        </include>
         FROM account AS a
         LEFT JOIN account_movie_ticket AS amt
         ON a.id = amt.account_id
         LEFT JOIN movie_ticket AS mt
         ON amt.movie_ticket_id = mt.id
+        LEFT JOIN movie AS m
+        ON mt.movie_id = m.id
+        LEFT JOIN attachment AS `at`
+        ON m.id = `at`.movie_id
         <where>
             <if test="id != null and id != ''">
                 AND a.id = #{id}

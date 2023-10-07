@@ -14,6 +14,7 @@
       <p class="name-info"></p>
       <p class="email-info"></p>
       <p class="point-info"></p>
+      <div class="ticketing-info"></div>
     </div>
   </div>
 </section>
@@ -25,6 +26,7 @@
   const $nameInfo = $('.name-info')
   const $emailInfo = $('.email-info')
   const $pointInfo = $('.point-info')
+  const $ticketingInfo = $('.ticketing-info')
 
   $.ajax({
     url: 'http://localhost:8080/api/account/me',
@@ -34,11 +36,33 @@
       $nameInfo.text(data.name)
       $emailInfo.text(data.email)
       $pointInfo.text(`${data.point} 포인트`)
+      Object.keys(data.movieTicketMap).forEach((screenTime) => {
+        const movie = data.movieTicketMap[screenTime][0].movie
+        const screenDatetime = new Date(screenTime)
+        const year = screenDatetime.getFullYear()
+        const month = screenDatetime.getMonth() + 1
+        const day = screenDatetime.getDate()
+        const hour = screenDatetime.getHours().toString().padStart(2, '0')
+        const min = screenDatetime.getMinutes().toString().padStart(2, '0')
+        const formattedDate = `${year}년 ${month}월 ${day}일 ${hour}:${min}`
+        const $div = $(`
+          <div>
+            <img style="width: 200px; height: 300px;" src="http://localhost:8080/img/${movie.id}/${movie.attachmentList[0].name}" alt="${movie.title} 포스터">
+            <p>${movie.title} - ${formattedDate}</p>
+          </div>
+        `)
+        const $ul = $(`<ul></ul>`)
+        data.movieTicketMap[screenTime].forEach((ticket) => {
+          $ul.append(`<li>${ticket.seatNumber}</li>`)
+        })
+        $div.append($ul)
+        $ticketingInfo.append($div)
+      })
     },
     error: (request) => {
       console.log(request)
       alert('로그인한 회원만 접근이 가능합니다.')
-      location.href = '/'
+      location.href = '/sign/in'
     }
   })
 </script>
