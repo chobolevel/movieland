@@ -26,7 +26,7 @@
                     javaType="List"
                     ofType="MovieReview"
                     columnPrefix="mr_"
-                    resultMap="kr.co.movieland.mapper.movie.MovieReviewMapper.BaseResultMap"/>
+                    resultMap="kr.co.movieland.mapper.movie.MovieReviewMapper.RelatedResultMap"/>
     </resultMap>
 
     <sql id="columns">
@@ -82,11 +82,18 @@
             <property name="alias" value="mr."/>
             <property name="prefix" value="mr_"/>
         </include>
+        ,
+        <include refid="kr.co.movieland.mapper.account.AccountMapper.columns">
+            <property name="alias" value="ac."/>
+            <property name="prefix" value="mr_ac_"/>
+        </include>
         FROM movie AS m
         LEFT JOIN attachment AS a
         ON m.id = a.movie_id
         LEFT JOIN movie_review AS mr
         ON m.id = mr.movie_id
+        LEFT JOIN account AS ac
+        ON mr.account_id = ac.id
         <where>
             m.id = #{id}
         </where>
