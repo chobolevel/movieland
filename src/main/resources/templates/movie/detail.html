@@ -13,6 +13,21 @@
     <div class="movie-detail">
 
     </div>
+    <div class="movie-review-form">
+      <form>
+        <div>
+          <input max="5" min="1" name="scope" step="1" type="range" value="3">
+          <span class="scope-number">3</span>
+        </div>
+        <div>
+          <textarea name="content" placeholder="영화 감상평을 남겨보세요!"></textarea>
+        </div>
+        <div>
+          <button>리뷰 등록</button>
+        </div>
+      </form>
+    </div>
+    <ul class="movie-reviews"></ul>
   </div>
 </section>
 
@@ -22,15 +37,24 @@
 <script th:inline="javascript">
   const movieId = [[${id}]]
   const $movieDetail = $('.movie-detail')
+  const $movieReviewForm = $('.movie-review-form')
+  const $scopeInput = $('input[name=scope]')
+  const $scopeNumber = $('.scope-number')
+  const $contentTextarea = $('textarea[name=content]')
+  const $movieReviews = $('.movie-reviews')
 
   $.ajax({
     url: `http://localhost:8080/api/movie/${movieId}`,
     type: 'GET',
     contentType: 'application/json',
     success: (movie) => {
+      const totalReviewCnt = movie.reviewList.length
+      const totalReviewScopeCnt = movie.reviewList.reduce((acc, cur) => acc + cur.scope, 0)
+      const totalReviewAvg = (totalReviewScopeCnt / totalReviewCnt).toFixed(1)
       $movieDetail.append(`
         <img src="http://localhost:8080/img/${movie.id}/${movie.attachmentList[0].name}" alt="${movie.title}">
         <p>${movie.title}</p>
+        <span>⭐ ${totalReviewAvg} (${totalReviewCnt})</span>
         <p>${movie.desc}</p>
         <p>${movie.duration} 분</p>
         <p>${movie.release}</p>
@@ -39,9 +63,55 @@
         <p>${movie.leadActors}</p>
         <p>${movie.genre}</p>
       `)
+      movie.reviewList.forEach((review) => {
+        $movieReviews.append(`
+          <li>
+            <span>${review.account.username.substring(0, 4) + "****"}</span>
+            <span>⭐ ${review.scope}</span>
+            <p>${review.content}</p>
+          </li>
+        `)
+      })
     },
     error: (request) => {
       console.log(request)
     }
+  })
+  $scopeInput.on('input', (e) => {
+    $scopeNumber.text(e.target.value)
+  })
+  $movieReviewForm.on('submit', (e) => {
+    e.preventDefault()
+    $.ajax({
+      url: 'http://localhost:8080/api/account/me',
+      type: 'GET',
+      contentType: 'application/json',
+      success: (account) => {
+        $.ajax({
+          url: 'http://localhost:8080/api/movie-review',
+          type: 'POST',
+          contentType: 'application/json',
+          dataType: 'json',
+          data: JSON.stringify({
+            movieId: movieId,
+            accountId: account.id,
+            content: $contentTextarea.val(),
+            scope: $scopeInput.val()
+          }),
+          success: (data) => {
+            alert('리뷰 작성 성공!')
+            location.reload()
+          },
+          error: (request) => {
+            alert('리뷰 작성 실패')
+            console.log(request)
+          }
+        })
+      },
+      error: (request) => {
+        alert('로그인 상태에서만 작성이 가능합니다.')
+        location.href = '/sign/in'
+      }
+    })
   })
 </script>
