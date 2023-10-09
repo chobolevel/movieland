@@ -12,5 +12,9 @@ public class BaseEntity {
   private String createDate;
   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
   private String updateDate;
+  @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
+  private int start;
+  @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
+  private int count;
 
 }
