@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -17,6 +18,11 @@ import java.util.UUID;
 public class MovieReviewServiceImpl implements MovieReviewService {
 
   private final MovieReviewMapper movieReviewMapper;
+
+  @Override
+  public List<MovieReview> findAll(MovieReview movieReview) {
+    return movieReviewMapper.findAll(movieReview);
+  }
 
   @Override
   public void create(MovieReview movieReview) throws ApiException {

@@ -7,10 +7,7 @@ import kr.co.movieland.service.movie.MovieReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class MovieReviewRestController {
 
   private final MovieReviewService movieReviewService;
+
+  @GetMapping("/{id}/list")
+  public ResponseEntity<?> getList(@PathVariable String id) {
+    return new ResponseEntity<>(movieReviewService.findAll(MovieReview.builder().id(id).build()), HttpStatus.OK);
+  }
 
   @PostMapping("")
   public ResponseEntity<?> createMovieReview(@RequestBody MovieReview movieReview) throws ApiException {

@@ -28,6 +28,27 @@
         ${alias}update_date AS ${prefix}update_date
     </sql>
 
+    <select id="findAll" resultMap="RelatedResultMap" parameterType="MovieReview">
+        SELECT
+        <include refid="columns">
+            <property name="alias" value=""/>
+            <property name="prefix" value=""/>
+        </include>
+        ,
+        <include refid="kr.co.movieland.mapper.account.AccountMapper.columns">
+            <property name="alias" value="ac."/>
+            <property name="prefix" value="ac_"/>
+        </include>
+        FROM movie_review AS mr
+        LEFT JOIN account AS ac
+        ON mr.account_id = ac.id
+        <where>
+            <if test="movieId != null movieId != ''">
+                movie_id = #{movieId}
+            </if>
+        </where>
+    </select>
+
     <select id="findOne" resultMap="BaseResultMap" parameterType="MovieReview">
         SELECT
         <include refid="columns">
