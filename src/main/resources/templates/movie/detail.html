@@ -50,7 +50,7 @@
     success: (movie) => {
       const totalReviewCnt = movie.reviewList.length
       const totalReviewScopeCnt = movie.reviewList.reduce((acc, cur) => acc + cur.scope, 0)
-      const totalReviewAvg = (totalReviewScopeCnt / totalReviewCnt).toFixed(1)
+      const totalReviewAvg = totalReviewCnt === 0 ? 0 : (totalReviewScopeCnt / totalReviewCnt).toFixed(1)
       $movieDetail.append(`
         <img src="http://localhost:8080/img/${movie.id}/${movie.attachmentList[0].name}" alt="${movie.title}">
         <p>${movie.title}</p>
